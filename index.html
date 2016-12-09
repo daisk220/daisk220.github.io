@@ -190,15 +190,17 @@ $(function(){
     var total = 0;
     $('.t-watt').each(function(i, e){
       var $tss = $($('.tss')[i]);
-      var tm = $($('.t-hms')[i]).val().split(':');
-      var dur = int(tm[0]) * 3600
-                + int(tm[1]) * 60
-                + int(tm[2]);
-      var tss = int($(this).val()*dur/(ftp*3600)*10000)/100;
-      total += tss;
-      $tss.html(tss);
+      if($($('.t-hms')[i]).val()){
+        var tm = $($('.t-hms')[i]).val().split(':');
+        var dur = int(tm[0]) * 3600
+                  + int(tm[1]) * 60
+                  + int(tm[2]);
+        var tss = int($(this).val()*dur/(ftp*3600)*10000)/100;
+        total += $(this).val()*dur/(ftp*3600);
+        $tss.html(tss);
+      }
     });
-    $('#total_tss').text(total);
+    $('#total_tss').text(int(total*10000)/100);
   });
 
   $(document).on("click", ".add", function(){
