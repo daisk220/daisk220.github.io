@@ -211,6 +211,7 @@ $(function(){
   $(document).on("click", ".del", function(){
     if($(this).parent().parent().hasClass("input-plan")) return;
     $(this).parent().parent().remove();
+    $('#ftp').change();
   });
   function int(val) {
     if(val && !isNaN(val)){
