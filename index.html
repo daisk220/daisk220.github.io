@@ -6,6 +6,13 @@
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <style>
+input[type=number].hms {
+  display: inline-block;
+  vertical-align: middle;
+  width: 3em;
+  padding-right: 0;
+  padding-left: 2px;
+}
 .row{
   margin-bottom: 20px;
 }
@@ -134,22 +141,33 @@
       </div>
     </div>
 
-    <legend>Training Plan</legend>
+    <legend>Workout</legend>
     <div class="row">
-      <div class="col-xs-12 form inline h3">Total TSS: <span id="total_tss"></span></div>
+      <div class="col-xs-12 form inline h4">Total TSS: <span id="total_tss"></span></div>
     </div>
     <div class="row">
-      <div class="col-xs-3">Power</div>
-      <div class="col-xs-3">Duration</div>
-      <div class="col-xs-1">TSS</div>
-    </div>
-    <div class="row input-plan">
-      <div class="col-xs-3"><input type="text" class="form-control t-watt" maxlength="4" size="2" value="0"></div>
-      <div class="col-xs-3"><input type="time" step="1" class="form-control t-hms"></div>
-      <div class="col-xs-1"><span class="tss"></span></div>
-      <div class="col-xs-4 form-iline">
-        <i class="btn glyphicon glyphicon-plus add"></i><i class="btn glyphicon glyphicon-minus del hide"></i>
-      </div>
+      <table id="workout" class="table table-hover">
+        <thead>
+          <tr>
+            <th width="20%">Power</th>
+            <th width="45%">Duration (hh:mm:ss)</th>
+            <th width="15%">TSS</th>
+            <th width=""></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="workout">
+            <td><input type="text" class="form-control t-watt"></td>
+            <td class="form-inline">
+            <input type="number" min="0" class="form-control hms hour"><span> : </span>
+            <input type="number" min="0" class="form-control hms minute"><span> : </span>
+            <input type="number" min="0" class="form-control hms second">
+            </td>
+            <td><span class="tss"></span></td>
+            <td><i class="btn btn-xs glyphicon glyphicon-plus add"></i><i class="btn btn-xs glyphicon glyphicon-minus del hide"></i></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <hr/>
     <div class="row">
@@ -185,37 +203,34 @@ $(function(){
     });
   });
 
-  $(document).on("change", "#ftp,.t-watt,.t-hms", function(){
+  $(document).on("change", "#ftp,input.t-watt,input.hms", function(){
     var ftp = $('#ftp').val();
     var total = 0;
     $('.t-watt').each(function(i, e){
       var $tss = $($('.tss')[i]);
-      if($($('.t-hms')[i]).val()){
-        var tm = $($('.t-hms')[i]).val().split(':');
-        var dur = int(tm[0]) * 3600
-                  + int(tm[1]) * 60
-                  + int(tm[2]);
-        var tss = int($(this).val()*dur/(ftp*3600)*10000)/100;
-        total += $(this).val()*dur/(ftp*3600);
-        $tss.html(tss);
-      }
+      var dur = int($($('input.hour')[i]).val()) * 3600
+                + int($($('input.minute')[i]).val()) * 60
+                + int($($('input.second')[i]).val());
+      var tss = int($(this).val()*dur/(ftp*3600)*10000)/100;
+      total += $(this).val()*dur/(ftp*3600);
+      $tss.html(tss);
     });
     $('#total_tss').text(int(total*10000)/100);
   });
 
   $(document).on("click", ".add", function(){
-    var $input = $(".row.input-plan").clone();
-    $input.removeClass("input-plan");
-    $("input",$input).val("");
-    $(".tss",$input).text("");
-    $(".del",$input).removeClass("hide");
+    var $wo = $("tr.workout").clone();
+    $wo.removeClass("workout");
+    $("input",$wo).val("");
+    $(".tss",$wo).text("");
+    $(".del",$wo).removeClass("hide");
     var $row = $(this).parent().parent();
-    $row.after($input);
+    $row.after($wo);
   });
 
   $(document).on("click", ".del", function(){
     var $row = $(this).parent().parent();
-    if(!$row.hasClass("input-plan")) $row.remove();
+    if(!$row.hasClass("workout")) $row.remove();
   });
 
   function int(val) {
