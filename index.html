@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<style>
+.row{
+  margin-bottom: 20px;
+}
+#trainingzone td.min {
+  width: 7em;
+  padding-right: 1em;
+  text-align: right;
+}
+#trainingzone td.btw {
+  width: 3em;
+  text-align: center;
+}
+#trainingzone td.max{
+  padding-left: 1em;
+  width: 7em;
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h1>TSS Calc</h1>
+    </div>
+
+    <legend>Basic</legend>
+    <div class="row">
+      <div class="col-sm-2">FTP</div>
+      <div class="col-sm-3">
+        <input type="text" class="form-control input-sm" id="ftp" placeholder="FTP" maxlength="3">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-heading">Training Zone</div>
+        <table id="trainingzone" class="table table-hover">
+          <thead>
+            <tr>
+              <th colspan="2" class="text-center">Level</th>
+              <th colspan="3" class="text-center">Range (%)</th>
+              <th colspan="3" class="text-center">Power</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>L1</td>
+              <td>Recovery</td>
+              <td class="min"></td>
+              <td class="btw">-</td>
+              <td class="max">55</td>
+              <td class="min"><div class="watt min"></div></td>
+              <td class="btw">-</td>
+              <td class="max"><div class="watt max"></div></td>
+            </tr>
+            <tr>
+              <td>L2</td>
+              <td>Endurance</td>
+              <td class="min">56</td>
+              <td class="btw">-</td>
+              <td class="max">75</td>
+              <td class="min"><div class="watt min"></div></td>
+              <td class="btw">-</td>
+              <td class="max"><div class="watt max"></div></td>
+            </tr>
+            <tr>
+              <td>L3</td>
+              <td>Tempo</td>
+              <td class="min">76</td>
+              <td class="btw">-</td>
+              <td class="max">90</td>
+              <td class="min"><div class="watt min"></div></td>
+              <td class="btw">-</td>
+              <td class="max"><div class="watt max"></div></td>
+            </tr>
+            <tr>
+              <td>L4</td>
+              <td>Threshold</td>
+              <td class="min">91</td>
+              <td class="btw">-</td>
+              <td class="max">105</td>
+              <td class="min"><div class="watt min"></div></td>
+              <td class="btw">-</td>
+              <td class="max"><div class="watt max"></div></td>
+            </tr>
+            <tr>
+              <td>L5</td>
+              <td>VO2 max</td>
+              <td class="min">106</td>
+              <td class="btw">-</td>
+              <td class="max">120</td>
+              <td class="min"><div class="watt min"></div></td>
+              <td class="btw">-</td>
+              <td class="max"><div class="watt max"></div></td>
+            </tr>
+            <tr>
+              <td>L6</td>
+              <td>Anerobic Capacity</td>
+              <td class="min">121</td>
+              <td class="btw">-</td>
+              <td class="max">150</td>
+              <td class="min"><div class="watt min"></div></td>
+              <td class="btw">-</td>
+              <td class="max"><div class="watt max"></div></td>
+            </tr>
+            <tr>
+              <td>L7</td>
+              <td>Neuromuscular</td>
+              <td class="min"></td>
+              <td class="btw"></td>
+              <td class="max"></td>
+              <td class="min"></td>
+              <td class="btw"></td>
+              <td class="max"></td>
+            </tr>
+            <tr class="info">
+              <td colspan="2">SST</td>
+              <td class="min">88</td>
+              <td class="btw">-</td>
+              <td class="max">94</td>
+              <td class="min"><div class="watt min"></div></td>
+              <td class="btw">-</td>
+              <td class="max"><div class="watt max"></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <legend>Training Plan</legend>
+    <div class="row">
+      <div class="col-sm-12 form inline h3">Total TSS: <span id="total_tss"></span></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">Title</div>
+      <div class="col-sm-2">Power</div>
+      <div class="col-sm-3">Duration</div>
+      <div class="col-sm-1">TSS</div>
+    </div>
+    <div class="row input-plan">
+      <div class="col-sm-4"><input type="text" class="form-control"></div>
+      <div class="col-sm-2 form-inline"><input type="text" class="form-control t-watt" maxlength="4" size="2" value="0"> W</div>
+      <div class="col-sm-3 form-inline"><input type="text" class="form-control t-hour" maxlength="2" size="1" value="0"> : <input type="text" class="form-control t-minute" maxlength="2" size="1" value="0"> : <input type="text" class="form-control t-second" maxlength="2" size="1" value="0"></div>
+      <div class="col-sm-1"><span class="tss"></span></div>
+      <div class="col-sm-2 form-iline">
+        <i class="btn glyphicon glyphicon-plus add" style="font-size:20px;"></i>
+        <i class="btn glyphicon glyphicon-minus del hide" style="font-size:20px;"></i>
+      </div>
+    </div>
+    <hr/>
+    <div class="row">
+      <div class="well">
+        <blockquote>
+          TSS = (sec x NP<sup>&reg;</sup> x IF<sup>&reg;</sup>)/(FTP x 3600) x 100
+          <small><cite>http://home.trainingpeaks.com/blog/article/estimating-training-stress-score-tss</cite></small>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script>
+$(function(){
+  var ratio = [
+    [undefined, 55],
+    [56, 75],
+    [76, 90],
+    [91, 105],
+    [106, 120],
+    [121, 150],
+    [88, 94]
+  ];
+  $('#ftp').on('change', function(){
+    var ftp = $(this).val();
+    $('.watt.min').each(function(i, e){
+      $(e).html(Math.round(ftp/100*ratio[i][0]));
+    });
+    $('.watt.max').each(function(i, e){
+      $(e).html(Math.round(ftp/100*ratio[i][1]));
+    });
+  });
+  $(document).on("change", "#ftp,.t-watt,.t-hour,.t-minute,.t-second", function(){
+    var ftp = $('#ftp').val();
+    var total = 0;
+    $('.t-watt').each(function(i, e){
+      var $tss = $($('.tss')[i]);
+      var dur = int($($('.t-hour')[i]).val()) * 3600
+                  + int($($('.t-minute')[i]).val()) * 60
+                  + int($($('.t-second')[i]).val());
+      var tss = int($(this).val()*dur/(ftp*3600)*10000)/100;
+      total += tss;
+      $tss.html(tss);
+    });
+    $('#total_tss').text(total);
+  });
+  $(document).on("click", ".add", function(){
+    var $input = $(".row.input-plan").clone();
+    $input.removeClass("input-plan");
+    $("input",$input).val("");
+    $(".tss",$input).text("");
+    $(".del",$input).removeClass("hide");
+    $(this).parent().parent().after($input);
+  });
+  $(document).on("click", ".del", function(){
+    if($(this).parent().parent().hasClass("input-plan")) return;
+    $(this).parent().parent().remove();
+  });
+  function int(val) {
+    if(val && !isNaN(val)){
+      return Number.parseInt(val);
+    }
+    return 0;
+  }
+});
+  </script>
+</body>
+</html>
