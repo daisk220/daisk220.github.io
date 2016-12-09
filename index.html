@@ -32,8 +32,8 @@
 
     <legend>Basic</legend>
     <div class="row">
-      <div class="col-sm-2">FTP</div>
-      <div class="col-sm-3">
+      <div class="col-xs-2">FTP</div>
+      <div class="col-xs-3">
         <input type="text" class="form-control input-sm" id="ftp" placeholder="FTP" maxlength="3">
       </div>
     </div>
@@ -136,22 +136,19 @@
 
     <legend>Training Plan</legend>
     <div class="row">
-      <div class="col-sm-12 form inline h3">Total TSS: <span id="total_tss"></span></div>
+      <div class="col-xs-12 form inline h3">Total TSS: <span id="total_tss"></span></div>
     </div>
     <div class="row">
-      <div class="col-sm-4">Title</div>
-      <div class="col-sm-2">Power</div>
-      <div class="col-sm-3">Duration</div>
-      <div class="col-sm-1">TSS</div>
+      <div class="col-xs-3">Power</div>
+      <div class="col-xs-3">Duration</div>
+      <div class="col-xs-1">TSS</div>
     </div>
     <div class="row input-plan">
-      <div class="col-sm-4"><input type="text" class="form-control"></div>
-      <div class="col-sm-2 form-inline"><input type="text" class="form-control t-watt" maxlength="4" size="2" value="0"> W</div>
-      <div class="col-sm-3 form-inline"><input type="text" class="form-control t-hour" maxlength="2" size="1" value="0"> : <input type="text" class="form-control t-minute" maxlength="2" size="1" value="0"> : <input type="text" class="form-control t-second" maxlength="2" size="1" value="0"></div>
-      <div class="col-sm-1"><span class="tss"></span></div>
-      <div class="col-sm-2 form-iline">
-        <i class="btn glyphicon glyphicon-plus add" style="font-size:20px;"></i>
-        <i class="btn glyphicon glyphicon-minus del hide" style="font-size:20px;"></i>
+      <div class="col-xs-3"><input type="text" class="form-control t-watt" maxlength="4" size="2" value="0"></div>
+      <div class="col-xs-3"><input type="time" step="1" class="form-control t-hms"></div>
+      <div class="col-xs-1"><span class="tss"></span></div>
+      <div class="col-xs-4 form-iline">
+        <i class="btn glyphicon glyphicon-plus add"></i><i class="btn glyphicon glyphicon-minus del hide"></i>
       </div>
     </div>
     <hr/>
@@ -177,6 +174,7 @@ $(function(){
     [121, 150],
     [88, 94]
   ];
+
   $('#ftp').on('change', function(){
     var ftp = $(this).val();
     $('.watt.min').each(function(i, e){
@@ -186,33 +184,38 @@ $(function(){
       $(e).html(Math.round(ftp/100*ratio[i][1]));
     });
   });
-  $(document).on("change", "#ftp,.t-watt,.t-hour,.t-minute,.t-second", function(){
+
+  $(document).on("change", "#ftp,.t-watt,.t-hms", function(){
     var ftp = $('#ftp').val();
     var total = 0;
     $('.t-watt').each(function(i, e){
       var $tss = $($('.tss')[i]);
-      var dur = int($($('.t-hour')[i]).val()) * 3600
-                  + int($($('.t-minute')[i]).val()) * 60
-                  + int($($('.t-second')[i]).val());
+      var tm = $($('.t-hms')[i]).val().split(':');
+      var dur = int(tm[0]) * 3600
+                + int(tm[1]) * 60
+                + int(tm[2]);
       var tss = int($(this).val()*dur/(ftp*3600)*10000)/100;
       total += tss;
       $tss.html(tss);
     });
     $('#total_tss').text(total);
   });
+
   $(document).on("click", ".add", function(){
     var $input = $(".row.input-plan").clone();
     $input.removeClass("input-plan");
     $("input",$input).val("");
     $(".tss",$input).text("");
     $(".del",$input).removeClass("hide");
-    $(this).parent().parent().after($input);
+    var $row = $(this).parent().parent();
+    $row.after($input);
   });
+
   $(document).on("click", ".del", function(){
-    if($(this).parent().parent().hasClass("input-plan")) return;
-    $(this).parent().parent().remove();
-    $('#ftp').change();
+    var $row = $(this).parent().parent();
+    if(!$row.hasClass("input-plan")) $row.remove();
   });
+
   function int(val) {
     if(val && !isNaN(val)){
       return Number.parseInt(val);
